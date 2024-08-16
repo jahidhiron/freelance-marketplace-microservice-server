@@ -1,0 +1,60 @@
+module.exports = () => ({
+  presets: [
+    ['@babel/preset-typescript'],
+    [
+      '@babel/env',
+      {
+        bugfixes: true,
+        loose: true,
+        modules: isCommonJS ? 'commonjs' : false,
+        targets: {
+          esmodules: isESM ? true : undefined,
+          chrome: 70,
+        },
+      },
+    ],
+  ],
+});
+
+
+Breakdown of the Code:
+
+Environment Detection:
+const BABEL_ENV = process.env.BABEL_ENV;
+const isCommonJS = BABEL_ENV !== undefined && BABEL_ENV === 'cjs';
+const isESM = BABEL_ENV !== undefined && BABEL_ENV === 'esm';
+
+The BABEL_ENV environment variable is checked to determine the current build environment.
+isCommonJS: 
+Set to true if BABEL_ENV is set to 'cjs', indicating that the build should output CommonJS modules.
+isESM: 
+Set to true if BABEL_ENV is set to 'esm', indicating that the build should output ECMAScript Modules (ESM).
+
+@babel/preset-typescript:
+This preset allows Babel to transpile TypeScript code into JavaScript. It strips TypeScript syntax 
+(like types) while keeping the code structure intact.
+
+@babel/env:
+This preset automatically determines the Babel plugins you need based on your 
+target environments (e.g., browsers or Node.js).
+
+bugfixes: true: 
+Enables bug fixes that are safe to apply automatically.
+
+loose: 
+true: Enables loose transformations that produce simpler, smaller output code 
+but might be less spec-compliant.
+
+modules: isCommonJS ? 'commonjs' : false:
+If isCommonJS is true (meaning BABEL_ENV is 'cjs'), Babel will output CommonJS modules (require/module.exports).
+If isCommonJS is false (e.g., BABEL_ENV is 'esm'), Babel won't transform ES module 
+syntax (i.e., it will keep import/export statements intact).
+
+targets: { esmodules: isESM ? true : undefined, chrome: 70 }:
+If isESM is true, it will target ES modules-compatible environments.
+
+The chrome: 
+70 target ensures that the code will be compatible with Chrome version 70 and above, 
+which can influence how Babel transforms certain JavaScript features.
+
+

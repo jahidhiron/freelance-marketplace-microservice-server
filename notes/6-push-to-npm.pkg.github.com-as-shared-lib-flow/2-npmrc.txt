@@ -1,0 +1,21 @@
+step 1:
+Create a new file inside shared directly named .npmrc
+This file is used to authenticate npm registry
+This file is used to access npm registry
+
+step 2:
+update repository key inside package.json file like bellow
+
+"repository": {
+    "type": "git",
+    "url": "git+https://github.com/jahidhiron/jobber-shared.git"
+  },
+
+step 3: update npmrc file
+    step i: update default registry (npmjs.com) to npm.pkg.github.com
+        @jahidhiron:registry=https://npm.pkg.github.com/jahidhiron
+    
+    step ii: when we setup GitHub Actions then they will copy the npmrc file content and authenticate
+        //npm.pkg.github.com/:_authToken=<github_api_token>
+
+    

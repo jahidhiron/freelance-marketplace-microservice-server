@@ -1,0 +1,4 @@
+step 1:
+create a .github dir in the project root dir. And inside .github dir, create another 
+dir workflows and then create publish.yml file.
+.github/workflows/publish.yml

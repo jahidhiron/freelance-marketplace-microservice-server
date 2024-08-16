@@ -1,0 +1,128 @@
+version: "3.9"
+services:
+  redis:
+    container_name: redis_container
+    image: redis:alpine
+    restart: always
+    ports:
+      - "6379:6379"
+    # By setting the log level to warning, Redis will ignore debug, verbose, and notice logs.
+    # This reduces the amount of log output, making it easier to focus on potential issues in
+    # a production environment.
+    command: redis-server --loglevel warning
+    volumes:
+      - ./docker-volumes/cache:/data
+
+  mongodb:
+    container_name: mongodb_container
+    image: mongo:latest
+    restart: always
+    ports:
+      - 27017:27017
+    volumes:
+      - ./docker-volumes/data:/data/db
+
+  mysql:
+    container_name: mysql_container
+    image: mysql
+    # when new users are created in MySQL, they will use mysql_native_password for authentication by default.
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      - MYSQL_USER=jobber
+      - MYSQL_DATABASE=jobber_auth
+      - MYSQL_ROOT_PASSWORD=api
+      - MYSQL_PASSWORD=api
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./docker-volumes/mysql:/var/lib/mysql
+
+  postgres:
+    container_name: postgres_container
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_USER=jobber
+      - POSTGRES_PASSWORD=api
+      - POSTGRES_DB=jobber_reviews
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./docker-volumes/postgres:/var/lib/postgresql
+
+  rabbitmq:
+    container_name: rabbitmq_container
+    # The -management tag indicates that this RabbitMQ image includes the RabbitMQ Management Plugin,
+    # which provides a user-friendly web-based interface for managing and monitoring RabbitMQ.
+    image: rabbitmq:3.13-rc-management-alpine
+    restart: always
+    environment:
+      - RABBITMQ_DEFAULT_USER=jobber
+      - RABBITMQ_DEFAULT_PASS=jobberpass
+    ports:
+      # AMQP(Advanced Message Queuing Protocol) port
+      - "5672:5672"
+      # Management UI
+      - "15672:15672"
+
+  elasticsearch:
+    container_name: elasticsearch_container
+    # make sure pull the image from elasticsearch official documentation
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.12.2
+    restart: always
+    environment:
+      # these are for java vartual mechine(JVM) configuration
+      ES_JAVA_OPTS: -Xmx1g -Xms1g
+      bootstrap.memory_lock: "true"
+
+      discovery.type: single-node
+      network.host: 0.0.0.0
+      transport.host: 127.0.0.1
+      http.host: 0.0.0.0
+      # security related configuration
+      xpack.security.enabled: "true"
+      xpack.security.authc.api_key.enabled: "true"
+      xpack.monitoring.collection.enabled: "true"
+      xpack.security.enrollment.enabled: "true"
+      xpack.security.authc.token.enabled: "true"
+      ELASTIC_PASSWORD: admin1234
+    ports:
+      # multiple port setting for multi-node cluster
+      - 9300:9300
+      - 9200:9200
+    volumes:
+      - ./docker-volumes/elasticsearch-data:/usr/share/elasticsearch/data
+    # docker-compose by default create a network
+    # when you create a custom networks the it communicates with service(elasticsearch) by this network instead of ip address
+    # by defining a custom network, you can isolate your Elasticsearch cluster and related services from other services running in Docker.
+    # Elasticsearch often runs as a cluster, meaning multiple nodes (containers) work together. Specifying a network ensures that all nodes in the cluster can communicate over the same network.
+    networks:
+      - elastic
+
+  # # kibana is a dashboard to view elasticsearch data
+  kibana:
+    container_name: kibana_container
+    image: docker.elastic.co/kibana/kibana:8.12.2
+    restart: always
+    environment:
+      - ELASTICSEARCH_HOSTS=["http://elasticsearch_container:9200"]
+      - ELASTICSEARCH_USERNAME=kibana_system
+      - ELASTICSEARCH_PASSWORD=kibana
+      # follow the steps: notes/elasticsearch-and-kibana/2-generate-elasticsearch-service-account-token.txt
+      - ELASTICSEARCH_SERVICEACCOUNT_TOKEN=AAEAAWVsYXN0aWMva2liYW5hL2pvYmJlci1raWJhbmE6M0YtNUNCc3RUQ3V2Z3dRSUotLTRzQQ
+      - XPACK_FLEET_AGENTS_ELASTICSEARCH_HOSTS=["http://elasticsearch_container:9200"]
+    ports:
+      - 5601:5601
+    networks:
+      - elastic
+    volumes:
+      # we are replacing default /usr/share/kibana/config/kibana.yml config file by our custom kibana.yml file
+      - ./kibana.yml/:/usr/share/kibana/config/kibana.yml:ro
+    # depends_on:
+    #   - elasticsearch
+
+# By defining the network under the networks section, you explicitly instruct Docker Compose to create the network with a specific name
+networks:
+  elastic:
+    name: elastic

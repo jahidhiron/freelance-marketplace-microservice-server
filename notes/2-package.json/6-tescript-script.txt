@@ -1,0 +1,37 @@
+"test": "jest --coverage=true -w=1 --forceExit --detectOpenHandles --watchAll=false"
+
+
+Explanation of Each Part:
+jest:
+
+This is the command to run the Jest testing framework.
+--coverage=true:
+
+This flag generates a code coverage report. Code coverage measures the 
+percentage of your code that is tested by the Jest test suite 
+(e.g., how many functions, lines, and branches are covered by tests).
+This report can be found in the coverage/ folder after the test run.
+
+-w=1:
+-w or --maxWorkers=1 limits Jest to run only one worker process at a time.
+Jest usually runs tests in parallel to improve performance. 
+By setting this to 1, you're telling Jest to run tests serially, 
+one at a time, which can be useful when debugging issues or dealing 
+with resource constraints.
+
+--forceExit:
+This flag forces Jest to exit after the tests complete, even if there 
+are asynchronous tasks still running.
+This can be useful when there are open handles (like unclosed database 
+connections, timers, etc.) that would otherwise prevent Jest from exiting normally.
+
+--detectOpenHandles:
+This flag instructs Jest to detect and print any open handles that 
+could prevent the process from exiting.
+This helps in identifying potential issues like unclosed 
+database connections, file handles, timers, or sockets.
+
+--watchAll=false:
+This flag disables Jest's watch mode, which reruns tests when files change.
+By setting --watchAll=false, you ensure that Jest runs the tests 
+once and exits, which is common in Continuous Integration (CI) environments.

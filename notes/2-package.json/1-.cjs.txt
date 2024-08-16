@@ -1,0 +1,37 @@
+The .cjs file extension stands for "CommonJS" and is typically used in Node.js projects to indicate that 
+the file uses the CommonJS module system. This is particularly relevant in projects that use both 
+CommonJS (require/module.exports) and ECMAScript Modules (ESM) (import/export) in the same codebase.
+
+When to Use .cjs:
+Node.js Module Resolution: 
+In Node.js, the .cjs extension explicitly tells the runtime that the file should be treated as a CommonJS module, even if 
+the project is set up to use ECMAScript modules by default (for example, when "type": "module" is specified in the package.json).
+
+Hybrid Projects: 
+If you're working on a project that mixes CommonJS and ESM, using .cjs for CommonJS files and .mjs for ESM 
+files can help avoid confusion and errors related to module imports.
+
+Example:
+
+// example.cjs
+const fs = require('fs');
+
+module.exports = function readFile(filePath) {
+  return fs.readFileSync(filePath, 'utf8');
+};
+
+This file can be safely imported in another CommonJS module or in an ESM module using dynamic import:
+
+// ESM file
+import readFile from './example.cjs';
+
+Common Use Cases:
+Legacy Code: When dealing with older Node.js codebases that use CommonJS, you might use .cjs to differentiate 
+from newer code that uses ESM.
+
+Package Development: 
+If you're developing a package that needs to support both CommonJS and ESM, you might have .cjs files for 
+backward compatibility.
+
+In summary, .cjs is a way to ensure that a file is treated as a CommonJS module in environments 
+where both CommonJS and ESM are in use.

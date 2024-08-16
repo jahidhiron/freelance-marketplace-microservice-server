@@ -1,0 +1,55 @@
+"plugins": [{ "transform": "typescript-transform-paths" }, { "transform": "typescript-transform-paths", "afterDeclarations": true }],
+"paths": {
+    "@notifications/*": ["src/*"]
+},
+
+
+The configuration you're referring to involves using the typescript-transform-paths plugin in a TypeScript project. 
+This plugin is often used in conjunction with the paths option in tsconfig.json to handle module path aliasing more
+effectively during both compilation and transformation stages. Here’s a breakdown of what each part does:
+
+paths Configuration:
+
+"paths": {
+  "@notifications/*": ["src/*"]
+}
+
+Purpose: 
+The paths option in tsconfig.json allows you to define custom path aliases for your modules. 
+This can simplify imports and make your codebase more maintainable.
+
+Example: 
+If you have a file at src/components/Notification.ts, instead of importing it using a relative path like this:
+
+import { Notification } from '../../components/Notification';
+
+You can import it using the alias:
+
+import { Notification } from '@notifications/components/Notification';
+
+
+How It Works: 
+The paths setting maps the alias @notifications/* to the src/* directory. This means that any import 
+that starts with @notifications/ will be resolved relative to the src directory.
+
+typescript-transform-paths Plugin:
+"plugins": [
+  { "transform": "typescript-transform-paths" },
+  { "transform": "typescript-transform-paths", "afterDeclarations": true }
+]
+
+Purpose: The typescript-transform-paths plugin ensures that these path aliases are correctly 
+transformed during the TypeScript compilation process. This is particularly useful when generating 
+output files that need to maintain these paths, such as in CommonJS or ES module output.
+
+First Plugin Entry:
+{ "transform": "typescript-transform-paths" }
+
+This entry handles the transformation of paths in your TypeScript source files. It ensures that the 
+path aliases are resolved and transformed into relative paths in the emitted JavaScript files.
+
+Second Plugin Entry (afterDeclarations: true):
+{ "transform": "typescript-transform-paths", "afterDeclarations": true }
+
+This entry ensures that the path transformations are also applied to your declaration (.d.ts) files. 
+This is crucial if you are generating type declarations for your project and want to maintain consistent path aliases.

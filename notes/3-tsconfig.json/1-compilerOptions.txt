@@ -1,0 +1,98 @@
+Summary:
+This tsconfig.json file is configured to compile a TypeScript project with modern 
+JavaScript features, strict type-checking, and support for JSX (React). 
+It outputs declaration files, source maps, and the compiled code into a build directory 
+while ensuring that errors prevent the code from being emitted. The configuration also 
+includes support for experimental decorators, consistent casing in file names, 
+and importing JSON modules, making it well-suited for a modern, strict, and reliable TypeScript project.
+
+The provided tsconfig.json file is a configuration file for TypeScript that specifies how the 
+TypeScript compiler (tsc) should behave when compiling your TypeScript code. Let's break down each 
+part of the file to understand its purpose and how it helps with TypeScript development.
+
+compilerOptions:
+
+This section contains various options that control the behavior of the TypeScript compiler.
+
+declaration: true:
+Generates corresponding .d.ts declaration files for each TypeScript file, which can be useful 
+if you plan to publish your code as a library or share it with other TypeScript projects.
+
+emitDeclarationOnly: true:
+When set to true, only the declaration files (.d.ts) are emitted, not the JavaScript code. 
+This is useful for creating type definitions without compiling to JavaScript.
+
+experimentalDecorators: true:
+Enables support for experimental decorators, which are a special kind of declaration used in 
+class-based code (e.g., Angular, NestJS).
+
+allowSyntheticDefaultImports: true:
+Allows default imports from modules that don’t have a default export. This can be particularly 
+helpful when working with modules that use CommonJS.
+
+importHelpers: true:
+Reduces the size of the emitted JavaScript by importing helper functions from tslib instead of 
+inlining them in every file (e.g., for handling async/await, spread, etc.).
+
+jsx: "react-jsx":
+Specifies the JSX compilation mode. "react-jsx" is for projects using React 17 or later, 
+which supports the new JSX transform.
+
+lib: ["dom", "esnext"]:
+Specifies the libraries to include in the compilation. "dom" includes types for DOM objects, 
+and "esnext" includes the latest ECMAScript features.
+
+module: "esnext":
+Specifies the module system for the output. "esnext" outputs ECMAScript modules, which can be 
+useful in modern environments.
+
+moduleResolution: "node":
+Specifies how modules are resolved. "node" mimics Node.js resolution, which is useful for 
+projects targeting Node.js or using Node.js-style module imports.
+
+noEmitOnError: true:
+Prevents the TypeScript compiler from emitting output files if there are any type errors, 
+ensuring that only valid code is compiled.
+
+outDir: "build":
+Specifies the directory where the compiled JavaScript files will be output. In this case, 
+the output will be in the build directory.
+
+rootDir: "src":
+Specifies the root directory of your source files. This helps the compiler organize 
+the output structure in the outDir.
+
+sourceMap: true:
+Generates source maps for the compiled JavaScript files, which map the JavaScript code 
+back to the original TypeScript code, aiding in debugging.
+
+strict: true:
+Enables strict type-checking options, ensuring your code adheres to stricter type rules, 
+which helps catch potential bugs early.
+
+target: "es2021":
+Specifies the target ECMAScript version for the output JavaScript. "es2021" includes 
+modern JavaScript features like nullish coalescing, optional chaining, and more.
+
+emitDecoratorMetadata: true:
+Emits additional type metadata for decorators, which can be used by frameworks like 
+Angular or NestJS that rely on this metadata.
+
+forceConsistentCasingInFileNames: true:
+Ensures that file imports are case-sensitive, which can help avoid issues when deploying 
+to case-sensitive file systems like those used in Linux.
+
+pretty: true:
+Makes the compiler's output more readable by formatting errors and warnings in a user-friendly way.
+
+resolveJsonModule: true:
+Allows importing JSON files as modules, which can be useful when working with configuration 
+files or static data in your project.
+
+include:
+Specifies the files or directories to be included in the compilation. "src" means that all 
+TypeScript files within the src directory will be included.
+
+exclude:
+Specifies files or directories to be excluded from the compilation. "node_modules" ensures that 
+dependencies are not included in the compilation, which is typical for most projects.

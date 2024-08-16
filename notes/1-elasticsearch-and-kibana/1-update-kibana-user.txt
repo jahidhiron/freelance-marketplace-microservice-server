@@ -1,0 +1,4 @@
+setp 1: Goto elasticsearch container
+step 2: Run the bellow command
+cmd: curl -s -X POST -u <elastic_user>:<elastic_password> -H <"header_key_value_pair"> <elasticsearch_endpoint>/_security/<which_you_want_to_update__in_this_case_user>/<name_of_the_user>/_<which_field_you_want_to_uodate> -d "{\"<key>\":\"<value>\"}"
+ex: curl -s -X POST -u elastic:admin1234 -H "Content-Type: application/json" http://localhost:9200/_security/user/kibana_system/_password -d "{\"password\":\"kibana\"}"

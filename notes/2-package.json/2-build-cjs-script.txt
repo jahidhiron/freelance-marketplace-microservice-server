@@ -1,0 +1,67 @@
+babel src --presets=./scripts/babel-preset.js --extensions .ts,.tsx --ignore src/**/*.specs.tsx --out-dir build/cjs --source-maps
+
+Summary:
+This command sets the NODE_ENV to production (indicating a production environment) and BABEL_ENV to cjs 
+(indicating that Babel should use the CommonJS Modules configuration).
+This command uses Babel to transpile TypeScript (.ts) and TypeScript with JSX (.tsx) files from 
+the src directory, excluding test files (*.specs.tsx). The transpiled files are output to the 
+build/cjs directory, with source maps generated for debugging purposes. 
+The Babel configuration is customized using a preset defined in ./scripts/babel-preset.js.
+
+Breakdown:
+
+NODE_ENV=production:
+
+NODE_ENV is an environment variable that indicates the environment in which the Node.js application is running.
+production signifies that the application is being built for a production environment, which 
+typically enables optimizations and disables certain development features (e.g., more aggressive minification, 
+disabling dev tools, etc.).
+
+BABEL_ENV=cjs:
+
+BABEL_ENV is an environment variable used by Babel to determine which configuration to use.
+cjs indicates that Babel should use the configuration or settings defined for CommonJS Modules (cjs). 
+This can influence which presets and plugins are applied during the transpilation process, 
+particularly if the Babel configuration file (babel-preset.js) has different settings based on the environment.
+
+babel src:
+
+babel: 
+This is the Babel CLI command used to transpile files.
+src: 
+This specifies the directory containing the source files that Babel will process. Here, it's the src directory.
+--presets=./scripts/babel-preset.js:
+
+--presets: 
+This option tells Babel which preset configuration to use for the transpilation process. 
+Presets are collections of Babel plugins that enable specific language features or transformations.
+./scripts/babel-preset.js: 
+This points to a custom Babel preset configuration file located at ./scripts/babel-preset.js. 
+This file contains the presets and plugins that Babel will use during the transpilation.
+--extensions .ts,.tsx:
+
+--extensions: 
+This option specifies which file extensions Babel should process. Here, it is configured to 
+handle .ts (TypeScript) and .tsx (TypeScript with JSX) files.
+
+--ignore src/**/*.specs.tsx:
+
+--ignore: 
+This option tells Babel to ignore certain files or patterns. In this case, it will ignore 
+all files that match the pattern src/**/*.specs.tsx. This typically means any test files with 
+a .specs.tsx extension will be excluded from the transpilation process.
+
+--out-dir build/cjs:
+
+--out-dir: 
+This option specifies the output directory for the transpiled files. In this case, 
+the transpiled files will be placed in the build/cjs directory.
+The choice of cjs as part of the output directory name suggests that the output is 
+intended to be in CommonJS format (possibly due to other configurations in the Babel preset).
+
+--source-maps:
+
+--source-maps: This option tells Babel to generate source maps for the transpiled files. 
+Source maps are useful for debugging because they map the transpiled code back to the 
+original source code, allowing developers to debug the code as if they were running 
+the original TypeScript or JSX files.

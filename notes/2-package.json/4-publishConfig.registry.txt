@@ -1,0 +1,31 @@
+"publishConfig": {
+  "registry": "https://npm.pkg.github.com"
+}
+
+
+The "publishConfig" field in a package.json file specifies configuration 
+options for publishing the package. When you include "publishConfig" in 
+your package.json, it customizes the behavior of the npm publish command. 
+The specific field "registry": "https://npm.pkg.github.com" tells npm to 
+publish the package to a specific registry, in this case, GitHub's package registry.
+
+What It Does:
+
+Custom Registry for Publishing:
+The "registry" field inside "publishConfig" overrides the default npm registry 
+(https://registry.npmjs.org/) and tells npm to publish your package to the GitHub 
+Package Registry at https://npm.pkg.github.com.
+
+GitHub Package Registry:
+The GitHub Package Registry is a service provided by GitHub that allows you to 
+host and manage your npm packages directly on GitHub.
+This is useful if you want to distribute your packages privately within your 
+organization or for open-source projects that are closely tied to GitHub repositories.
+
+Use Case:
+
+Private Packages: If you're developing private packages that should only be accessible 
+to specific users or teams, you can use the GitHub Package Registry to control access.
+
+Scoped Packages: Often, this is used with scoped packages, especially in organizations 
+that use GitHub extensively.

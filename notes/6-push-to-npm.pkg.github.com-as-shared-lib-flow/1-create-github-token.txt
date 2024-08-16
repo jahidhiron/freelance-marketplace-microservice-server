@@ -1,0 +1,25 @@
+step 1:
+Goto github repo > Settings > Developer Settings > Personal access tokens > Tokens (classic) > Generate new token > Generate new token (classic)
+
+step 2: Fill up information
+    a. setup a token name
+    b. setup expiration time
+    c. select scopes
+        i. repo
+        ii. workflow
+        iii. write:packages
+        iv. delete:packages
+        v. admin:org
+        vi. admin:public_key
+        vii. admin:repo_hook
+        viii. admin:org_hook
+        ix. Access notifications
+        x. userUpdate 
+        xi. delete_repo
+        xii. write:discussion
+        xiii. project
+        xiv. admin:gpg_key
+        xv. admin:ssh_signing_key
+
+step 3:
+generate token

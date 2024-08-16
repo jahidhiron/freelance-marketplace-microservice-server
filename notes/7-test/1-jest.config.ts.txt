@@ -1,0 +1,65 @@
+This Jest configuration is tailored for testing a TypeScript project, and it uses 
+the ts-jest preset for running tests. Let's break down what each part of 
+
+the configuration does:
+
+1. preset: 'ts-jest':
+This preset is used to configure Jest to handle TypeScript files. 
+It allows Jest to transpile .ts files using ts-jest before running the tests.
+
+2. testEnvironment: 'node':
+Specifies that the test environment should be Node.js. This means Jest will 
+simulate a Node environment (instead of a browser environment) while running tests.
+
+3. verbose: true:
+This flag makes Jest output more detailed information about the individual test cases, 
+showing whether each test passes or fails with descriptions.
+
+4. coverageDirectory: 'coverage':
+Specifies the directory (coverage/) where the code coverage reports will be saved. 
+The reports will show how much of your code is covered by tests.
+
+5. collectCoverage: true:
+Enables code coverage collection, meaning Jest will track which parts of the code 
+were executed during testing and generate a report.
+
+6. testPathIgnorePatterns: ['/node_modules']:
+Tells Jest to ignore the node_modules/ folder when looking for test files, so tests 
+won't be run on any dependencies.
+
+7. transform: { '^.+\\.ts?$': 'ts-jest' }:
+This tells Jest to transform (or transpile) files that match the regular expression 
+(^.+\\.ts?$), i.e., .ts files (TypeScript files), using ts-jest. This allows Jest 
+to run TypeScript files without needing to precompile them.
+
+8. testMatch: ['<rootDir>/src/**/test/*.ts']:
+Defines the pattern for where Jest should look for test files. In this case, 
+it's telling Jest to only run tests that are in the test folders within src/, and only on .ts files.
+
+Example:
+A test file could be located at src/someModule/test/someTest.ts.
+
+9. collectCoverageFrom: ['src/**/*.ts', '!src/**/test/*.ts?(x)', '!**/node_modules/**']:
+Specifies which files should be included in the coverage report.
+src/**/*.ts: Collects coverage for all .ts files in the src directory.
+!src/**/test/*.ts?(x): Excludes .ts files in test folders (so your actual test 
+files are not counted towards coverage).
+
+!**/node_modules/**: Excludes the node_modules folder from coverage.
+
+10. coverageThreshold: { global: { branches: 1, functions: 1, lines: 1, statements: 1 } }:
+Sets the minimum code coverage thresholds that must be met globally. In this case, the 
+thresholds are very low (1% coverage for branches, functions, lines, and statements), 
+which means as long as some coverage exists, the tests won't fail due to coverage.
+
+11. coverageReporters: ['text-summary', 'lcov']:
+Specifies which coverage reporters should be used:
+text-summary: Prints a summary of the coverage results to the console.
+lcov: Generates an lcov report (a file-based coverage report) that can be 
+viewed in a browser or used by CI systems to display detailed coverage data.
+
+12. moduleNameMapper: { '@notifications/(.*)': ['<rootDir>/src/$1'] }:
+This is used for module path aliasing. It tells Jest to map any imports 
+starting with @notifications/ to the corresponding file in the src directory.
+
+For example, an import like @notifications/config will be resolved as <rootDir>/src/config.
